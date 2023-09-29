@@ -1,4 +1,8 @@
 <?php
+namespace source\Models\Article;//пространство имен, откуда будут брать информацию последующие укзания 
+use source\Models\User\User;
+  
+
 class Article{
     private $title;
     private $text;
@@ -13,21 +17,4 @@ class Article{
         return $this->author;
     }
 }
-class User{
-    private $name;
-
-    public function __construct(string $name){
-        $this-> name=$name;
-    }
-
-    public function getName(){
-        return $this->name;
-    }
-}
-
-$author= new User('Ivan');
-$article=new Article('new title','text',$author);
-
-echo $article->getAuthor()-> getName();
-
 ?>
