@@ -6,13 +6,18 @@ use source\Models\User\User;
 class Article{
     private $title;
     private $text;
-    private $author;
+    private $authorid;
+    private $id;
 
-    public function __construct(string $title, string $text, User $author){
-        $this->title=$title;
-        $this->text=$text;
-        $this->author=$author;
+    public function __set($name, $value){
+        echo 'Я пыта.сь создать свойство '. $name.'со значением '.$value.'<br>';
+        $this->underscoreToComeCase($name)=$value;
     }
+    public function underscoreToComeCase(string $name)::string;
+    {
+        return str_replace('_','', upwords($name,'_'))
+    }
+
     public function getAuthor():User{
         return $this->author;
     }
