@@ -8,14 +8,14 @@
     </tr> 
   </thead> 
   <tbody> 
-    <?php foreach ($article as $article){ 
+    <?php foreach ($articles as $article){ 
       echo '<tr> 
-            <th scope="row">1</th> 
-            <td><a href="article/'.$article['id'].'">'.$article['name'].'</a></td> 
-            <td>'.$article['text'].'</td> 
+            <th scope="row">-----</th> 
+            <td><a href="/Frame/Project/www/article/'.$article->getId().'">'.$article->getTitle().'</a></td>
+            <td>'.$article->getText().'</td>
           </tr>'; 
     } 
     ?> 
   </tbody> 
 </table> 
-<?php require(dirname(__DIR__ ).'.../footer.html')?>
+<?php require(dirname(__DIR__ ).' .../footer.html')?>

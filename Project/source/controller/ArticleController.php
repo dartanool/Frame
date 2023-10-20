@@ -1,39 +1,75 @@
 <?php
 namespace source\controller;
 use source\View\View;
-use Services\Db;
-use Services\Article\Article;
+use source\Models\Article\Article;
+use source\Models\User\User;
 
 
 
 class ArticleController{
     private $view;
-    private $db;
     
     public function __construct()
     {
         $this->view = new View(__DIR__ . '/../../template');
-        $this->db=new Db;
 
     }
 
     public function index(){
-        $sql = 'SELECT *FROM `articles`';
-        $article=$this->db->query($sql);
-        // include __DIR__.'/../../template/main/main.php';
-        $this->view->renderHtml('/main/main.php',['article'=>$article]);
+        $articles = Article::findAll();
+        $this->view->renderHtml('/main/main.php', ['articles'=>$articles]);
     }
     
     public function show($id){
-        $sql ='SELECT * FROM `articles` WHERE `id`=:id;'; 
-        $article=$this->db->query($sql,[':id'=>$id],Article::class);
-        var_dump($article);
-        if (!$article) {
-            $this -> view -> renderHtml('/main/error.php',[],404);
+        $article = Article::getById($id);
+        $user = $article->getAuthorId();
+        
+
+        if(!$article){
+            $this->view->renderHtml('/main/error.php', [], 404);
             return;
         }
-        $this->view->renderHtml('/article/show.php',['article'=>$article[0]]);
-        // var_dump($article);
+        $this->view->renderHtml('/article/show.php', ['article'=>$article, 'user'=>$user]);
     } 
+
+    public function create(){
+        $users = User::findAll();
+        $this->view->renderHtml('/article/create.php', ['users'=>$users]);
+    }
+    public function store(){    
+        $article = new Article;
+        $article->setTitle($_POST['name']);
+        $article->setText($_POST['text']);
+        $article->setAuthorId($_POST['author']);
+        $article->save();
+        $this->index();
+
+    }
+
+    public function update(int $id){ 
+        $article=Article::getById($id);
+        $article->setTitle($_POST['name']);
+        $article->setText($_POST['text']);
+        $article->setAuthorId($_POST['author']);
+        $article->save();
+        $this->show($id);
+
+    }
+
+    public function edit(int $id){
+        $article=Article::getById($id);
+        $users=User::findAll($id);
+        $this-> view-> renderHtml('/article/edit.php',['article'=>$article, 'users'=>$users]);
+        
+    }
+    public function delete(int $id){
+        $article=Article::getById($id);
+        $article->delete();
+        $this->index();
+        
+    }
+    
+
+
 
 }

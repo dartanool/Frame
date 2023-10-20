@@ -12,11 +12,11 @@
 
 spl_autoload_register(function (string $className) {
 
-    require_once  '../'.str_replace('\\', '/', $className) . '.php';
-
+    require_once '../'.str_replace('\\', '/', $className). '.php';
 });
 
 // $controller = new source\controller\Maincontroller;
+
 $url=$_GET['route']??'';
 $routes = require '../source/routes.php';
 $isRouteFound=false; 

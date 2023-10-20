@@ -3,6 +3,8 @@ namespace Services;
 
 class Db{
     private $pdo;
+    private static $instance;
+
     public function __construct()
     {
         $dbOptions = require('settings.php');
@@ -16,12 +18,18 @@ class Db{
         $this->pdo->exec('SET NAMES UTF8');
         // var_dump($this->pdo);
     }
-    public function query(string $sql, $params=[],string $className='stdClass'):?array{
-        $sth=$this->pdo-> prepare($sql);
-        $result=$sth->execute($params);
+    public function query(string $sql, $params=[], string $className='stdClass'):?array{
+        $sth = $this->pdo->prepare($sql);
+        $result = $sth->execute($params);
+        if($result === false) return null;
+        return $sth->fetchAll(\PDO::FETCH_CLASS, $className);
+    }
 
-        if (false === $result) return null;
-        return $sth->fetchAll(\PDO::FETCH_CLASS,$className);
+    public static function getInstance(){
+        if (self::$instance === null){
+            return self::$instance = new self();
+        }
+        return self::$instance;
     }
 
 }

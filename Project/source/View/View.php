@@ -1,6 +1,8 @@
 <?php
 namespace source\View;
+
 class View{
+
     private $templatePath;
 
     public function __construct(string $templatePath){
