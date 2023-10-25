@@ -1,6 +1,7 @@
 <?php
 namespace source\Models\Article;//пространство имен, откуда будут брать информацию последующие укзания 
 use source\Models\User\User;
+use source\Models\Comment\Comment;
 use source\ActiveRecordEntity;
   
 

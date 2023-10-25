@@ -3,6 +3,7 @@ namespace source\controller;
 use source\View\View;
 use source\Models\Article\Article;
 use source\Models\User\User;
+use source\Models\Comment\Comment;
 
 
 
@@ -23,13 +24,14 @@ class ArticleController{
     public function show($id){
         $article = Article::getById($id);
         $user = $article->getAuthorId();
+        $comment = Comment::findAll();
         
 
         if(!$article){
             $this->view->renderHtml('/main/error.php', [], 404);
             return;
         }
-        $this->view->renderHtml('/article/show.php', ['article'=>$article, 'user'=>$user]);
+        $this->view->renderHtml('/article/show.php', ['article'=>$article, 'user'=>$user, 'comment'=>$comment]);
     } 
 
     public function create(){
